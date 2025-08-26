@@ -21,3 +21,5 @@ def check_guess(secret, guess):
             cows += 1
     return bulls, cows
 
+def main_menu():
+    
