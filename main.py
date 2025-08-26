@@ -22,4 +22,41 @@ def check_guess(secret, guess):
     return bulls, cows
 
 def main_menu():
-    
+    current_player = None
+
+    while True:
+        print("1. Create new player")
+        print("2. List all players")
+        print("3. Select player")
+        if current_player:
+            print(f"4. Play Game ({current_player.username})")
+            print("5. View my stats")
+        print("6. Exit")
+
+        choice = input("Choose option: ").strip()
+
+        if choice == "1":
+            username = input("Enter username: ").strip()
+            if find_player_by_username(username):
+                print("Username taken!")
+            else:
+                new_player = Player(username)
+                new_player.save()
+                current_player = new_player
+                print(f"Player {username} created!")
+
+        elif choice == "2":
+            players = get_all_players()
+            if players:
+                for player in players:
+                    print(f"{player.username}")
+            else:
+                    print("No players found")
+
+        
+        elif choice == "3":
+            username = input("Enter username: ").strip()
+            player = find_player_by_username(username)
+            if player:
+                current_player = player
+                print("")
