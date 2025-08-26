@@ -20,3 +20,4 @@ def check_guess(secret, guess):
         elif guess[i] in secret:
             cows += 1
     return bulls, cows
+
