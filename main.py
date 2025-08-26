@@ -96,4 +96,27 @@ def main_menu():
 
             new_game.update()
             print("Game saved!")
+        
+        elif choice == "5" and current_player:
+            games = get_games_by_player(current_player.id)
+            if games:
+                wins = sum(1 for game in games if game.status == 'won')
+                total = len(games)
+                print(f"{current_player.username} Stats:")
+                print(f"Games: {total}")
+                print(f"Wins: {wins}")
+            else:
+                print("No games played")
+
+        elif choice == "6":
+            print("Goodbye!")
+            break
+
+        else:
+            print("Invalid choice")
+
+if __name == "__main__":
+    initialize_database()
+    main_menu()
+
                 
