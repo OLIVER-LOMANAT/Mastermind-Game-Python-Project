@@ -28,4 +28,36 @@ class Game:
         """
         CURSOR.execute(sql, (self.status, self.guesses_taken, self.id))
         CONN.commit()
-        
+    
+def create_game_table():
+    sql = """
+        CREATE TABLE IF NOT EXISTS games (
+        id INTEGER PRIMARY KEY,
+        player_id INETGER,
+        secret_number TEXT,
+        status TEXT,
+        guesses_taken INETGER,
+        created_at TEXT,
+        FOREIGN KEY (player_id) REFERENCES players (id)
+        )
+        """
+    CURSOR.execute(sql)
+    CONN.commit()
+
+def get_games_by_player(player_id):
+    sql = "SELECT * FROM games WHERE player_id = ?"
+    CURSOR.execute(sql, (player_id,))
+    rows = CURSOR.fetchall()
+    games = []
+    for row in rows:
+        game = Game(row[1], row[2], row[3], row[4], row[0])
+        games.append(game)
+    return games
+
+def find_game_by_id(game_id):
+    sql = "SELECT * FROM games WHERE id = ?"
+    CURSOR.execute(sql, (game_id,))
+    row = CURSOR.fetchone()
+    if row:
+        return Game(row[1], row[2], row[3], row[4], row[0])
+    return None
