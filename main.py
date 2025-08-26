@@ -59,4 +59,41 @@ def main_menu():
             player = find_player_by_username(username)
             if player:
                 current_player = player
-                print("")
+                print(f"Hello {current_player.username}")
+            else:
+                print("Player not found")
+
+        elif choice == "4" and current_player:
+            print("Guess my 4-digit number")
+            secret_number = generate_secret_number()
+            guesses = 0
+            won = False
+
+            new_game = Game(current_player.id, secret_number)
+            new_game.save()
+
+            while guesses < 10 and not won:
+                guess = input(f"Guess #{guesses + 1}: ").strip()
+
+                if len(guess) != 4 or not guess.isdigit():
+                    print("Enter 4-digit number")
+                    continue
+
+                guesses += 1
+                bulls, cows = check_guess(secret_number, guess)
+                print(f"{bulls} Bulls, {cows} Cows")
+
+                if bulls == 4:
+                    won = True
+                    new_game.status = "won"
+                    new_game.guesses_taken = guesses
+                    print(f"You won in {guesses} guesses!")
+
+            if not won:
+                new_game.status = "lost"
+                new_game.guesses_taken = guesses
+                print(f"Game over! Number was {secret_number}")
+
+            new_game.update()
+            print("Game saved!")
+                
